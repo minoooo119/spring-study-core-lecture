@@ -9,6 +9,8 @@ import hello.core.member.MemoryMemberRepository;
 import hello.core.member.MemberRepository;
 import hello.core.order.OrderService;
 import hello.core.order.OrderServiceImpl;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 //의 존 관 계 에 대한 고민은 외부에 맡기고 -> 그 외부가 AppConfig 임
 //실 행 에 만 집중한다.
@@ -16,6 +18,13 @@ import hello.core.order.OrderServiceImpl;
 // 의존 관계를 마치 의존에서 주입해주는 것 같다고 해서 -> dependency 주입
 // 의존 관계 주입 또는 의존성 주입 이라고 한더.
 
+
+/**
+ * section3. spring 으로 전환
+ * 이제 부터 Spring 을 사용해 볼 것이다 @Configuration, @Bean 추가하면 된다.
+ * Bean 들은 자동으로 spring container 에 등록이 된다.
+ */
+@Configuration
 public class AppConfig {
     // 인터페이스는 어떤 구현체를 사용할 것이며
     // 어떤 의존 관계를 가지고 있는지
@@ -29,23 +38,26 @@ public class AppConfig {
     // 이렇게 함으로써 OCP = open close principle, DIP = dependency inversion principle 2가지 원칙을 지킬 수 있다.
 
     //역할과 구현 클래스를 한눈에 볼 수 있도록 아래처럼 리펙토링을 할 수 있다.
-
+    @Bean //* section3. spring 으로 전환
     public MemberService memberService(){
         //생성자 injection
         return new MemberServiceImpl(memberRepository());
     }
 
+    @Bean //* section3. spring 으로 전환
     //이렇게 리펙토링 해야한다. -> 역할을 확실하게 알기 위해서이다. return 은 인터페이스로 하는 것이 맞다.
-    private static MemberRepository memberRepository() {
+    public MemberRepository memberRepository() {
         return new MemoryMemberRepository();
     }
 
+    @Bean //* section3. spring 으로 전환
     public OrderService orderService(){
         return new OrderServiceImpl(memberRepository(), discountPolicy());
     }
 
+    @Bean //* section3. spring 으로 전환
     //이렇게 리펙토링 해야한다. -> 역할을 확실하게 알기 위해서이다. return 은 인터페이스로 하는 것이 맞다.
-    private static DiscountPolicy discountPolicy() {
+    public DiscountPolicy discountPolicy() {
         //어떤 정책을 선택할지 결정한다.
         //어떤 구현체를 반환하느냐에 따라서 결정할 수 있다.
         //정책 수정에도 이 한줄만 수정할 수 있다는 것이 엄청난 장점이다.

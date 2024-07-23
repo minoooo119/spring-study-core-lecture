@@ -7,7 +7,12 @@ import hello.core.member.MemberServiceImpl;
 import hello.core.order.Order;
 import hello.core.order.OrderService;
 import hello.core.order.OrderServiceImpl;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
+/**
+ * section 3. spring 으로 전환 내용 추가
+ */
 public class OrderApp {
     public static void main(String[] args) {
 //        MemberService memberService = new MemberServiceImpl(null);
@@ -26,9 +31,17 @@ public class OrderApp {
         //version 2 -> DIP 만족하는 상황에서 테스트 진행
 
         //given
-        AppConfig appConfig = new AppConfig();
-        MemberService memberService = appConfig.memberService();
-        OrderService orderService = appConfig.orderService();
+//        AppConfig appConfig = new AppConfig();
+//        MemberService memberService = appConfig.memberService();
+//        OrderService orderService = appConfig.orderService();
+
+        // * section 3. spring 으로 전환 내용 추가
+        ApplicationContext applicationContext = new AnnotationConfigApplicationContext(AppConfig.class);
+        // 위처럼 하면 스프링 컨테이너에 appConfig 안에 있는 빈들을 다 집어넣어서 관리해준다.
+
+        MemberService memberService = applicationContext.getBean("memberService", MemberService.class);
+        OrderService orderService = applicationContext.getBean("orderService", OrderService.class);
+        //위처럼 컨테이너에 있는 빈들을 가져와서 사용하면 된다.
 
         //when
         Long memberId = 1L;
