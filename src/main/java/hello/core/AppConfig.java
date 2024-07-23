@@ -2,6 +2,7 @@ package hello.core;
 
 import hello.core.discount.DiscountPolicy;
 import hello.core.discount.FixDiscountPolicy;
+import hello.core.discount.RateDiscountPolicy;
 import hello.core.member.MemberService;
 import hello.core.member.MemberServiceImpl;
 import hello.core.member.MemoryMemberRepository;
@@ -46,6 +47,10 @@ public class AppConfig {
     //이렇게 리펙토링 해야한다. -> 역할을 확실하게 알기 위해서이다. return 은 인터페이스로 하는 것이 맞다.
     private static DiscountPolicy discountPolicy() {
         //어떤 정책을 선택할지 결정한다.
-        return new FixDiscountPolicy();
+        //어떤 구현체를 반환하느냐에 따라서 결정할 수 있다.
+        //정책 수정에도 이 한줄만 수정할 수 있다는 것이 엄청난 장점이다.
+        //구성 영역 외에 사용 영역은 어떠한 변경도 필요 없다.
+//        return new FixDiscountPolicy();
+        return new RateDiscountPolicy();
     }
 }
