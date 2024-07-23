@@ -1,11 +1,8 @@
 package hello.core.order;
 
 import hello.core.discount.DiscountPolicy;
-import hello.core.discount.FixDiscountPolicy;
-import hello.core.discount.RateDiscountPolicy;
 import hello.core.member.Member;
-import hello.core.member.MemoryMemberRepository;
-import hello.core.member.MemoryRepository;
+import hello.core.member.MemberRepository;
 
 public class OrderServiceImpl implements OrderService {
     //2개가 필요함
@@ -39,12 +36,12 @@ public class OrderServiceImpl implements OrderService {
 //    AppConfig 에서 진행할 => 구현 객체를 생성하고 연결해주는 역할을 수행한다.
 //////////   섹션 3. 객치 지향 원리 적용 => 관심사의 분리 내용
 
-    private final MemoryRepository memoryRepository; //구현체를 여기서 직접 주지 않기 위해 생성자 만들어라 //= new MemoryMemberRepository();
+    private final MemberRepository memoryRepository; //구현체를 여기서 직접 주지 않기 위해 생성자 만들어라 //= new MemoryMemberRepository();
     private final DiscountPolicy discountPolicy;
     //이제 DIP 를 지키게 된다. 구현체 말고 추상화인 인터페이스에만 의존하게 되었다.
     //외부에서 주입을 해줘야 한다. 어떤 구현체가 들어올지에 대해서는 의존하지 않을 수 있다. 여기서 결정해줄 것은 아니므로
 
-    public OrderServiceImpl(MemoryRepository memoryRepository, DiscountPolicy discountPolicy) {
+    public OrderServiceImpl(MemberRepository memoryRepository, DiscountPolicy discountPolicy) {
         this.memoryRepository = memoryRepository;
         this.discountPolicy = discountPolicy;
     }
