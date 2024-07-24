@@ -17,7 +17,8 @@ import static org.assertj.core.api.Assertions.*;
 
 public class ApplicationContextExtendsFindTest {
     AnnotationConfigApplicationContext ac = new AnnotationConfigApplicationContext(TestConfig.class);
-
+    // 실제로 개발을 하면서 빈을 조회하는 일은 거의 없긴하다
+    // 그래도 구조나 어떻게 조회가 되는지 아는 것이 좋으니까!
     @Test
     @DisplayName("부모 타입으로 조회시, 자식이 둘 이상 있으면 중복 오류가 발생한다.")
     void findBeanByParentTypeDuplicate() {
