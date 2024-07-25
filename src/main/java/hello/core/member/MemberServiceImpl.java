@@ -23,4 +23,9 @@ public class MemberServiceImpl implements MemberService {
     public Optional<Member> findMember(Long memberId) {
         return memoryRepository.findById(memberId);
     }
+
+    //싱글톤 테스트 용
+    public MemberRepository getMemoryRepository() {
+        return memoryRepository;
+    }
 }

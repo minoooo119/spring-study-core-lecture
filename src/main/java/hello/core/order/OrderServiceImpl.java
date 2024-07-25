@@ -55,4 +55,9 @@ public class OrderServiceImpl implements OrderService {
         int discountPrice = discountPolicy.discount(member, itemPrice);
         return new Order(memberId, itemName, itemPrice,discountPrice);
     }
+
+    // 싱글톤 테스트용
+    public MemberRepository getMemoryRepository() {
+        return memoryRepository;
+    }
 }

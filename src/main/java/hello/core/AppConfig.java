@@ -40,6 +40,9 @@ public class AppConfig {
     //역할과 구현 클래스를 한눈에 볼 수 있도록 아래처럼 리펙토링을 할 수 있다.
     @Bean //* section3. spring 으로 전환
     public MemberService memberService(){
+        // section 5. configuration singleton 관련
+        System.out.println("call AppConfig.memberService");
+
         //생성자 injection
         return new MemberServiceImpl(memberRepository());
     }
@@ -47,11 +50,17 @@ public class AppConfig {
     @Bean //* section3. spring 으로 전환
     //이렇게 리펙토링 해야한다. -> 역할을 확실하게 알기 위해서이다. return 은 인터페이스로 하는 것이 맞다.
     public MemberRepository memberRepository() {
+        // section 5. configuration singleton 관련
+        System.out.println("call AppConfig.memberRepository");
+
         return new MemoryMemberRepository();
     }
 
     @Bean //* section3. spring 으로 전환
     public OrderService orderService(){
+        // section 5. configuration singleton 관련
+        System.out.println("call AppConfig.orderService");
+
         return new OrderServiceImpl(memberRepository(), discountPolicy());
     }
 
@@ -65,4 +74,28 @@ public class AppConfig {
 //        return new FixDiscountPolicy();
         return new RateDiscountPolicy();
     }
+
+    /**
+     * section 5. singleton 관련
+     * @Bean memberService -> new MemoryMemberRepository()
+     * @Bean orderService -> new MemoryMemberRepository()
+     * 이렇게 의존 관계가 되어있으니까 singleton 이 깨져서 두 객체가 생성되는 것 아닌가?
+     * test 가 필요하다. => 싱글톤이 깨지는지 아닌지!
+     */
+
+
+    /**
+     * call AppConfig.memberService -> call AppConfig.memberRepository
+     * call AppConfig.memoryRepository
+     * call AppConfig.orderService -> call AppConfig.memberRepository
+     *
+     * 총 memberRepository 3번 호출 예상이 된다만..?
+     *
+     * call AppConfig.memberService
+     * call AppConfig.memberRepository
+     * call AppConfig.orderService
+     * 이렇게가 끝이다..
+     *
+     * 정말 singleton 을 보장해주는구나!!
+     */
 }
