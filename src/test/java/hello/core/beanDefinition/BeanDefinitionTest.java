@@ -24,6 +24,12 @@ public class BeanDefinitionTest {
                 System.out.println("beanDefinitionName = " + beanDefinitionName +
                         " beanDefinition = " + beanDefinition);
             }
+            // 스프링 컨테이너는 bean definition 을 확인해서 빈을 등록을 한다.
+            // 그래서 빈을 등록할 때에는 두가지 방법. 1. 직접 definition 을 추가한다. 2. factory bean 을 활용한다. 로 나뉜다.
+            // java config 를 통해 하는 것은 후자에 해당된다.
+            // 어쨋든 다양한 설정 정보를 bean definition 으로 추상화해서 확인한다고 이해하자.
+
+
             // 직접 bean definition 을 새롭게 추가할 수도 있으나 그럴일은 전혀 없다 -> 그냥 설정 파일에 적어두고 reader 가 읽어서 적을 수 있게 한다.
             // 다양한 형태의 설정 정보를 BeanDefinition 으로 추상화해서 사용하는 것 정도로만 이애하면 된다.
 
