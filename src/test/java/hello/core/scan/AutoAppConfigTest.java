@@ -12,6 +12,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import static org.assertj.core.api.Assertions.*;
 
 public class AutoAppConfigTest {
+    //맥북에서 해봄ㄴ
     @Test
     void basicScan() {
         AnnotationConfigApplicationContext ac = new AnnotationConfigApplicationContext(AutoAppConfig.class);
@@ -23,7 +24,7 @@ public class AutoAppConfigTest {
          *          Identified candidate component class: file [/Users/mino/Desktop/mino/core/out/production/classes/hello/core/discount/RateDiscountPolicy.class]
          * 11:00:21.940 [main] DEBUG o.s.c.a.ClassPathBeanDefinitionScanner --
          *          Identified candidate component class: file [/Users/mino/Desktop/mino/core/out/production/classes/hello/core/member/MemberServiceImpl.class]
-         * 11:00:21.941 [main] DEBUG o.s.c.a.ClassPathBeanDefinitionScanner --
+         * 11:00:21.941 [main] DEBUG o.s.c.a.ClassPathBeanㄲDefinitionScanner --
          *          Identified candidate component class: file [/Users/mino/Desktop/mino/core/out/production/classes/hello/core/member/MemoryMemberRepository.class]
          * 11:00:21.941 [main] DEBUG o.s.c.a.ClassPathBeanDefinitionScanner --
          *          Identified candidate component class: file [/Users/mino/Desktop/mino/core/out/production/classes/hello/core/order/OrderServiceImpl.class]
