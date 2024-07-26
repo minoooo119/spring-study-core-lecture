@@ -3,7 +3,13 @@ package hello.core.order;
 import hello.core.discount.DiscountPolicy;
 import hello.core.member.Member;
 import hello.core.member.MemberRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+/**
+ * section 6. component scan 관련
+ */
+@Component
 public class OrderServiceImpl implements OrderService {
     //2개가 필요함
     // 회원을 찾아야하고
@@ -40,7 +46,10 @@ public class OrderServiceImpl implements OrderService {
     private final DiscountPolicy discountPolicy;
     //이제 DIP 를 지키게 된다. 구현체 말고 추상화인 인터페이스에만 의존하게 되었다.
     //외부에서 주입을 해줘야 한다. 어떤 구현체가 들어올지에 대해서는 의존하지 않을 수 있다. 여기서 결정해줄 것은 아니므로
-
+    /**
+     * section 6. component scan 관련
+     */
+    @Autowired
     public OrderServiceImpl(MemberRepository memoryRepository, DiscountPolicy discountPolicy) {
         this.memoryRepository = memoryRepository;
         this.discountPolicy = discountPolicy;
