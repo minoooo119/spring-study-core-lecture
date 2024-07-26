@@ -7,13 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
- * section 6. component scan 관련
+ * 2개가 필요함
+ * 회원을 찾아야하고
+ * 할인 정책을 알아봐야함
  */
 @Component
 public class OrderServiceImpl implements OrderService {
-    //2개가 필요함
-    // 회원을 찾아야하고
-    // 할인 정책을 알아봐야함
 
 //    private final MemoryRepository memoryRepository = new MemoryMemberRepository();
     //할인 정책을 바꿔서 진행해보자
@@ -42,27 +41,87 @@ public class OrderServiceImpl implements OrderService {
 //    AppConfig 에서 진행할 => 구현 객체를 생성하고 연결해주는 역할을 수행한다.
 //////////   섹션 3. 객치 지향 원리 적용 => 관심사의 분리 내용
 
+    /**
+     * section 7. 의존 관계
+     * private final 로 되어 있는 경우 값을 넣어줘야한다.
+     * null 이 들어가면 안된다.
+     */
+
+    /*
+     * 1. 생성자 의존 관계 주입
+     * 생성자가 하나면 @Autowired 생략해도 된다.
+     */
     private final MemberRepository memberRepository; //구현체를 여기서 직접 주지 않기 위해 생성자 만들어라 //= new MemoryMemberRepository();
     private final DiscountPolicy discountPolicy;
-    //이제 DIP 를 지키게 된다. 구현체 말고 추상화인 인터페이스에만 의존하게 되었다.
-    //외부에서 주입을 해줘야 한다. 어떤 구현체가 들어올지에 대해서는 의존하지 않을 수 있다. 여기서 결정해줄 것은 아니므로
-    /**
-     * section 6. component scan 관련
-     */
-    @Autowired
+
+    //    //이제 DIP 를 지키게 된다. 구현체 말고 추상화인 인터페이스에만 의존하게 되었다.
+//    //외부에서 주입을 해줘야 한다. 어떤 구현체가 들어올지에 대해서는 의존하지 않을 수 있다. 여기서 결정해줄 것은 아니므로
+//    /**
+//     * section 6. component scan 관련 Autowired 해주기
+//     */
+    // new OrderServiceImpl() => 어차피 객체가 불릴 때 생성자를 통해 의존 관계가 설정 된다.
+    // 수정자는 그 다음 과정에 일어난다.
+    @Autowired //스프링 빈으로 등록된 객체는 Autowired 로 자동 주입이 가능하다. 주입 되는 객체도 스프링 빈으로 관리되는 객체들이다.
     public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
         this.memberRepository = memberRepository;
+//        System.out.println("memberRepository = " + memberRepository); // section 7
         this.discountPolicy = discountPolicy;
+//        System.out.println("discountPolicy = " + discountPolicy); // section 7
     }
 
+    /*
+     * 2. 수정자 의존 관계 주입 (setter)
+     *
+     *     수정자를 사용하려면 당연하게도 final 을 삭제해야한다.
+     *
+     *     private MemberRepository memberRepository;
+     *     private DiscountPolicy discountPolicy;
+     *
+     *     Autowired 시 주입 대상이 없으면 오류가 발생한다. 오류 없애려면 아래와 같이 한다.
+     *
+     *     @Autowired(required = false) //필수가 아니게 하는 것
+     *     public void setMemberRepository(MemberRepository memberRepository) {
+     *         System.out.println("memberRepository = " + memberRepository);
+     *         this.memberRepository = memberRepository;
+     *     }
+     *
+     *     @Autowired
+     *     public void setDiscountPolicy(DiscountPolicy discountPolicy) {
+     *         System.out.println("discountPolicy = " + discountPolicy);
+     *         this.discountPolicy = discountPolicy;
+     *     }
+     */
 
-    @Override
+    /*
+     * 3. 필드 주입 -> 권장되지는 않는 방법이다.
+     *
+     *      @Autowired private MemberRepository memberRepository;
+     *      @Autowired private DiscountPolicy discountPolicy;
+     *
+     *      어차피 이게 되게 하려면 setter 가 필요하게 됨. 순수하게 자바에서 하려고 하면 불가능 => spring 에서만 가능한 것
+     *      DI 프레임워크가 없이는 아무것도 할 수 없게 된다.
+     *
+     *      springboot 의 test 시에는 사용하면 좋다.
+     *      스프링 내부에서 사용하는 경우에만 사용하는게 좋다. 그러면 보통 injection 이 되어서 어렵지 nullPointException 이 발생안함
+     */
+
+    /* 4. 일반 메서드 -> 이 것도 굳이 왜 쓰나 싶긴함
+     *     private MemberRepository memberRepository;
+     *     private DiscountPolicy discountPolicy;
+     *
+     *     @Autowired
+     *     public void init(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
+     *         this.memberRepository = memberRepository;
+     *         this.discountPolicy = discountPolicy;
+     *     }
+     */
+
     public Order createOrder(Long memberId, String itemName, int itemPrice) {
         Member member = memberRepository.findById(memberId).get();
 
         // member 자체를 넘길지 grade 만 넘길지 선택해 줄 수도 있다.
         int discountPrice = discountPolicy.discount(member, itemPrice);
-        return new Order(memberId, itemName, itemPrice,discountPrice);
+        return new Order(memberId, itemName, itemPrice, discountPrice);
     }
 
     // 싱글톤 테스트용
