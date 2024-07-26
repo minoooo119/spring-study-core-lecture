@@ -42,7 +42,7 @@ public class OrderServiceImpl implements OrderService {
 //    AppConfig 에서 진행할 => 구현 객체를 생성하고 연결해주는 역할을 수행한다.
 //////////   섹션 3. 객치 지향 원리 적용 => 관심사의 분리 내용
 
-    private final MemberRepository memoryRepository; //구현체를 여기서 직접 주지 않기 위해 생성자 만들어라 //= new MemoryMemberRepository();
+    private final MemberRepository memberRepository; //구현체를 여기서 직접 주지 않기 위해 생성자 만들어라 //= new MemoryMemberRepository();
     private final DiscountPolicy discountPolicy;
     //이제 DIP 를 지키게 된다. 구현체 말고 추상화인 인터페이스에만 의존하게 되었다.
     //외부에서 주입을 해줘야 한다. 어떤 구현체가 들어올지에 대해서는 의존하지 않을 수 있다. 여기서 결정해줄 것은 아니므로
@@ -50,15 +50,15 @@ public class OrderServiceImpl implements OrderService {
      * section 6. component scan 관련
      */
     @Autowired
-    public OrderServiceImpl(MemberRepository memoryRepository, DiscountPolicy discountPolicy) {
-        this.memoryRepository = memoryRepository;
+    public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
+        this.memberRepository = memberRepository;
         this.discountPolicy = discountPolicy;
     }
 
 
     @Override
     public Order createOrder(Long memberId, String itemName, int itemPrice) {
-        Member member = memoryRepository.findById(memberId).get();
+        Member member = memberRepository.findById(memberId).get();
 
         // member 자체를 넘길지 grade 만 넘길지 선택해 줄 수도 있다.
         int discountPrice = discountPolicy.discount(member, itemPrice);
@@ -67,6 +67,6 @@ public class OrderServiceImpl implements OrderService {
 
     // 싱글톤 테스트용
     public MemberRepository getMemoryRepository() {
-        return memoryRepository;
+        return memberRepository;
     }
 }
