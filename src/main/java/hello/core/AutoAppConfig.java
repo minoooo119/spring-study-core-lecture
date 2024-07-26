@@ -1,5 +1,8 @@
 package hello.core;
 
+import hello.core.member.MemberRepository;
+import hello.core.member.MemoryMemberRepository;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.FilterType;
@@ -37,4 +40,25 @@ import org.springframework.context.annotation.FilterType;
 )
 //알아서 스캔 해온데 이러면 => Component annotation 이 붙은 것들을 자동으로 빈으로 다 저장을 해준다.
 public class AutoAppConfig {
+//        @Bean(name = "memoryMemberRepository")
+//        MemberRepository memberRepository() {
+//                return new MemoryMemberRepository();
+//        }
+        /**
+         * 중복이 있을 경우는 자동 말고 수동으로 등록한 빈이 우선권이 있다.
+         * Overriding bean definition for bean 'memoryMemberRepository' with a different definition:
+         * replacing [Generic bean: class [hello.core.member.MemoryMemberRepository];
+         * defined in file [/Users/mino/Desktop/mino/core/out/production/classes/hello/core/member/MemoryMemberRepository.class]]
+         * with [Root bean: class [null]; scope=;
+         * defined in hello.core.AutoAppConfig]
+         */
+
+        /**
+         * 그러나 spring 자체는 overriding 을 금지하고 있다.
+         * The bean 'memoryMemberRepository',
+         * defined in class path resource [hello/core/AutoAppConfig.class],
+         * could not be registered. A bean with that name has already been
+         * defined in file [/Users/mino/Desktop/mino/core/out/production/classes/hello/core/member/MemoryMemberRepository.class]
+         * and overriding is disabled.
+         */
 }
