@@ -1,5 +1,6 @@
 package hello.core.order;
 
+import hello.core.annotation.MainDiscountPolicy;
 import hello.core.discount.DiscountPolicy;
 import hello.core.member.Member;
 import hello.core.member.MemberRepository;
@@ -67,7 +68,7 @@ public class OrderServiceImpl implements OrderService {
     @Autowired //스프링 빈으로 등록된 객체는 Autowired 로 자동 주입이 가능하다. 주입 되는 객체도 스프링 빈으로 관리되는 객체들이다.
 //    public OrderServiceImpl(MemberRepository memberRepository, @Qualifier("mainDiscountPolicy") DiscountPolicy discountPolicy) {
     // Qualifier 보단 Primary 쓰는 것이 편하긴하다 => 매번 써줄 필요 없으므로
-    public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
+    public OrderServiceImpl(MemberRepository memberRepository, @MainDiscountPolicy DiscountPolicy discountPolicy) {
         this.memberRepository = memberRepository;
 //        System.out.println("memberRepository = " + memberRepository); // section 7
         this.discountPolicy = discountPolicy;
