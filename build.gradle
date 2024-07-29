@@ -12,15 +12,24 @@ java {
 		languageVersion = JavaLanguageVersion.of(17)
 	}
 }
-
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	} }
 repositories {
 	mavenCentral()
 }
 
 dependencies {
+
 	implementation 'org.springframework.boot:spring-boot-starter'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+	testCompileOnly 'org.projectlombok:lombok'
+	testAnnotationProcessor 'org.projectlombok:lombok'
 }
 
 tasks.named('test') {

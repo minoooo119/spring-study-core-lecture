@@ -3,7 +3,9 @@ package hello.core.order;
 import hello.core.discount.DiscountPolicy;
 import hello.core.member.Member;
 import hello.core.member.MemberRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 /**
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Component;
  * 할인 정책을 알아봐야함
  */
 @Component
+//@RequiredArgsConstructor //final 이 붙어있는 변수를 가지는 생성자를 만들어 준다.
 public class OrderServiceImpl implements OrderService {
 
 //    private final MemoryRepository memoryRepository = new MemoryMemberRepository();
@@ -62,12 +65,20 @@ public class OrderServiceImpl implements OrderService {
     // new OrderServiceImpl() => 어차피 객체가 불릴 때 생성자를 통해 의존 관계가 설정 된다.
     // 수정자는 그 다음 과정에 일어난다.
     @Autowired //스프링 빈으로 등록된 객체는 Autowired 로 자동 주입이 가능하다. 주입 되는 객체도 스프링 빈으로 관리되는 객체들이다.
+//    public OrderServiceImpl(MemberRepository memberRepository, @Qualifier("mainDiscountPolicy") DiscountPolicy discountPolicy) {
+    // Qualifier 보단 Primary 쓰는 것이 편하긴하다 => 매번 써줄 필요 없으므로
     public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
         this.memberRepository = memberRepository;
 //        System.out.println("memberRepository = " + memberRepository); // section 7
         this.discountPolicy = discountPolicy;
 //        System.out.println("discountPolicy = " + discountPolicy); // section 7
     }
+
+    /**
+     * section 7. 롬복 활용
+     * Lombok 을 통해 위 생성자를 생략할 수 있다.
+     */
+
 
     /*
      * 2. 수정자 의존 관계 주입 (setter)
