@@ -2,6 +2,7 @@ package hello.core.scope;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
+import jakarta.inject.Provider;
 import lombok.Getter;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -82,15 +83,31 @@ public class SingletonWithPrototypeTest1 {
 //            this.prototypeBean = prototypeBean;
 //        }
         //절대 좋은 방식이 아님 -> 해결 방법 필요함
+
+        /**
+         * ObjectFactory, ObjectProvider
+         * 'ObjectProvider' 의 `getObject()` 를 호출하면 내부에서는 스프링 컨테이너를 통해 해당 빈을 찾아서 반환 한다. (**DL**)
+         * 스프링에 의존
+         */
+//        @Autowired
+//        private ObjectProvider<PrototypeBean> prototypeBeanObjectProvider;
+
+        /**
+         * JSR-330 자바 표준을 사용하는 방법
+         * 'Provider' 는 지금 딱 필요한 DL 정도의 기능만 제공한다.
+         * ObjectProvider -> Provider 사용
+         * 함수도 .getObject() -> .get() 사용
+         */
         @Autowired
-        private ObjectProvider<PrototypeBean> prototypeBeanObjectProvider;
+        private Provider<PrototypeBean> prototypeBeanProvider;
 
         /**
          * 다른 프로토타입을 매번 가져오기 위해 ObjectProvider 를 사용한다.
          */
         public int logic() {
             //provider 가 딱 찾아줘서 제공을 해준다. -> 이 시점에 요청을 할 수 있다.
-            PrototypeBean prototypeBean = prototypeBeanObjectProvider.getObject();
+//            PrototypeBean prototypeBean = prototypeBeanObjectProvider.getObject();
+            PrototypeBean prototypeBean = prototypeBeanProvider.get();
             prototypeBean.addCount();
             return prototypeBean.getCount();
         }
