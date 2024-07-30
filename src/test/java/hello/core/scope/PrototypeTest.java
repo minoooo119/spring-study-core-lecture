@@ -29,6 +29,7 @@ public class PrototypeTest {
          * prototypeBean2 = hello.core.scope.PrototypeTest$PrototypeBean@3d9c13b5
          */
         //init 은 있지만 destroy 는 나오지 않는다. 딱 생성, 의존 관계 주입 까지만 해준다.
+        //그래서 콜백함수 종료에 대해서는 수동으로 불러줘야한다.
         ac.close();
 
     }
