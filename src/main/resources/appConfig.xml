@@ -5,7 +5,7 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <bean id="memberService" class="hello.core.member.MemberServiceImpl">
-        <constructor-arg name="memoryRepository" ref="memberRepository"/>
+        <constructor-arg name="memberRepository" ref="memberRepository"/>
     </bean>
 
     <bean id="memberRepository" class="hello.core.member.MemoryMemberRepository"/>
@@ -13,7 +13,7 @@
 <!--    id가 역할 이고 class 가 구현체인 것 같다-->
 
     <bean id="orderService" class="hello.core.order.OrderServiceImpl">
-        <constructor-arg name="memoryRepository" ref="memberRepository"/>
+        <constructor-arg name="memberRepository" ref="memberRepository"/>
         <constructor-arg name="discountPolicy" ref="discountPolicy"/>
     </bean>
 
